@@ -52,6 +52,7 @@ export default async function AdminVehiclesPage({ searchParams }: { searchParams
         <table className="w-full text-sm">
           <thead className="bg-white/[0.03] text-left text-xs uppercase text-white/40">
             <tr>
+              <th className="px-4 py-3">Código</th>
               <th className="px-4 py-3">Veículo</th>
               <th className="px-4 py-3">Preço</th>
               <th className="px-4 py-3">Vendedor</th>
@@ -62,6 +63,7 @@ export default async function AdminVehiclesPage({ searchParams }: { searchParams
           <tbody>
             {vehicles.map((vehicle) => (
               <tr key={vehicle.id} className="border-t border-white/5">
+                <td className="px-4 py-3 font-mono text-xs text-white/50">{vehicle.code}</td>
                 <td className="px-4 py-3 text-white">
                   {vehicle.brand} {vehicle.model} {vehicle.year}
                   {vehicle.featured && <Badge className="ml-2">Destaque</Badge>}
@@ -82,7 +84,7 @@ export default async function AdminVehiclesPage({ searchParams }: { searchParams
             ))}
             {vehicles.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-white/40">
+                <td colSpan={6} className="px-4 py-8 text-center text-white/40">
                   Nenhum veículo encontrado.
                 </td>
               </tr>

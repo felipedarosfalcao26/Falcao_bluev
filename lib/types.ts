@@ -47,6 +47,7 @@ export interface VehicleImage {
 
 export interface Vehicle {
   id: string;
+  code: string;
   slug: string;
   brand: string;
   model: string;

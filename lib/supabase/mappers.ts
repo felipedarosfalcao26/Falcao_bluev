@@ -33,6 +33,7 @@ export function mapVehicleImage(row: any): VehicleImage {
 export function mapVehicle(row: any): Vehicle {
   return {
     id: row.id,
+    code: row.code,
     slug: row.slug,
     brand: row.brand,
     model: row.model,

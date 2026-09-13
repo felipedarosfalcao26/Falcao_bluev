@@ -73,6 +73,7 @@ export default async function VehicleDetailsPage({ params }: { params: { slug: s
               <p className="mt-1 text-sm text-white/50">
                 {formatKm(vehicle.mileageKm)} · {vehicle.city} - {vehicle.state} · {vehicle.sellerType}
               </p>
+              <p className="mt-1 text-xs text-white/40">Código do anúncio: {vehicle.code}</p>
 
               <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {specs.map((spec) => (
