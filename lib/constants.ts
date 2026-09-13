@@ -48,5 +48,11 @@ export const VEHICLE_BRANDS = [
   'Porsche',
   'Audi',
   'Kia',
+  'Ford',
+  'Chevrolet',
+  'Chery',
+  'Toyota',
+  'Geely',
+  'Omoda',
   'Outras',
 ] as const;
