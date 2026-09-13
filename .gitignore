@@ -7,3 +7,6 @@ build
 .env.local
 *.log
 .DS_Store
+scratch/*.jpg
+scratch/*.jpeg
+scratch/*.png
