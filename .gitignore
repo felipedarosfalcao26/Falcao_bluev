@@ -10,3 +10,5 @@ build
 scratch/*.jpg
 scratch/*.jpeg
 scratch/*.png
+scratch/*.webp
+scratch/carregados-photos/
