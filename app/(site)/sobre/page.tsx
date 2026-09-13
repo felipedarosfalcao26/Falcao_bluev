@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Compass, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -27,6 +28,19 @@ export default function AboutPage() {
           description="Nascemos para resolver um problema simples: o Brasil precisa de infraestrutura de recarga confiável para acelerar a adoção de veículos elétricos. Hoje conectamos carregadores, motoristas, veículos e empresas em uma única plataforma."
           light
         />
+      </Container>
+
+      <Container className="mb-20">
+        <div className="relative aspect-[21/9] w-full overflow-hidden rounded-3xl border border-white/10">
+          <Image
+            src="/images/sobre-banner.jpg"
+            alt="Técnico instalando um carregador BlueV"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 1200px, 100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-transparent to-transparent" />
+        </div>
       </Container>
 
       <Container className="mb-20 grid grid-cols-2 gap-6 sm:grid-cols-4">

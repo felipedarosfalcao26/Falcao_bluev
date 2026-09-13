@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, MapPin, Zap } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
@@ -66,16 +67,17 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-blue-800 via-ink-900 to-ink-950 shadow-[0_40px_120px_-20px_rgba(11,127,255,0.45)]">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_45%)]" />
-            <motion.div
-              className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/30 blur-2xl"
-              animate={{ scale: [1, 1.15, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_40px_120px_-20px_rgba(11,127,255,0.45)]">
+            <Image
+              src="/images/hero-charging.jpg"
+              alt="Carro elétrico recarregando à noite"
+              fill
+              priority
+              className="object-cover"
+              sizes="(min-width: 1024px) 45vw, 90vw"
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Zap size={140} className="text-white/25" strokeWidth={1} />
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/10 to-ink-950/30" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_45%)]" />
 
             <motion.div
               initial={{ opacity: 0, y: 16 }}
