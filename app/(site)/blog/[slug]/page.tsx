@@ -8,12 +8,11 @@ import { BlogCard } from '@/components/blog/BlogCard';
 import { ShareButton } from '@/components/blog/ShareButton';
 import { formatDatePtBR, isRealImageUrl } from '@/lib/utils';
 import { SITE_URL } from '@/lib/constants';
-import { getBlogPostBySlug, getRelatedBlogPosts, listBlogPosts } from '@/services/blog.service';
+import { getBlogPostBySlug, getRelatedBlogPosts } from '@/services/blog.service';
 
-export async function generateStaticParams() {
-  const posts = await listBlogPosts();
-  return posts.map((p) => ({ slug: p.slug }));
-}
+// Content is created/edited after deploy via the admin panel, so these pages must always
+// be rendered per-request rather than statically prerendered at build time.
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug);

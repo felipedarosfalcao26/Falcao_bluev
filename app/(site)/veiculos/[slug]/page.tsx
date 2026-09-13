@@ -7,12 +7,11 @@ import { VehicleActions } from '@/components/vehicles/VehicleActions';
 import { VehicleCard } from '@/components/vehicles/VehicleCard';
 import { formatCurrencyBRL, formatKm } from '@/lib/utils';
 import { SITE_URL } from '@/lib/constants';
-import { getVehicleBySlug, getRelatedVehicles, listVehicles } from '@/services/vehicles.service';
+import { getVehicleBySlug, getRelatedVehicles } from '@/services/vehicles.service';
 
-export async function generateStaticParams() {
-  const vehicles = await listVehicles();
-  return vehicles.map((v) => ({ slug: v.slug }));
-}
+// Listings are created/edited after deploy (admin panel + public "anunciar veículo" form),
+// so these pages must always be rendered per-request rather than statically prerendered.
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const vehicle = await getVehicleBySlug(params.slug);
