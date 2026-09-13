@@ -1,0 +1,38 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#053a85"/>
+      <stop offset="55%" stop-color="#081527"/>
+      <stop offset="100%" stop-color="#02060c"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="50%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid2" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="fadegrad2" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="white"/>
+      <stop offset="100%" stop-color="black"/>
+    </radialGradient>
+    <mask id="fade2">
+      <rect width="1600" height="900" fill="url(#fadegrad2)"/>
+    </mask>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg2)"/>
+  <rect width="1600" height="900" fill="url(#grid2)" mask="url(#fade2)"/>
+  <rect width="1600" height="900" fill="url(#glow2)"/>
+
+  <!-- battery body -->
+  <g transform="translate(560,260)">
+    <rect x="0" y="0" width="440" height="220" rx="28" fill="none" stroke="white" stroke-opacity="0.92" stroke-width="14"/>
+    <rect x="440" y="70" width="36" height="80" rx="8" fill="white" fill-opacity="0.92"/>
+    <rect x="26" y="26" width="120" height="168" rx="8" fill="#22d3ee"/>
+    <rect x="160" y="26" width="120" height="168" rx="8" fill="#0b7fff"/>
+    <rect x="294" y="26" width="120" height="168" rx="8" fill="rgba(255,255,255,0.12)"/>
+  </g>
+
+  <text x="80" y="820" font-family="Arial, sans-serif" font-size="34" fill="rgba(255,255,255,0.55)" letter-spacing="4">BLUEV INSIGHTS</text>
+</svg>

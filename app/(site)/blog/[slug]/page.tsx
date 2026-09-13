@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Badge } from '@/components/ui/Badge';
@@ -62,7 +61,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-white/10">
           {isRealImageUrl(post.image) ? (
-            <Image src={post.image} alt={post.title} fill className="object-cover" priority />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
           ) : (
             <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-16 w-16" />
           )}

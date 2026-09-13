@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/lib/types';
 import { formatDatePtBR, isRealImageUrl } from '@/lib/utils';
@@ -22,7 +21,8 @@ export function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }
       >
         <div className="relative aspect-[16/10]">
           {isRealImageUrl(post.image) ? (
-            <Image src={post.image} alt={post.title} fill className="object-cover" />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
           ) : (
             <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-12 w-12" />
           )}
