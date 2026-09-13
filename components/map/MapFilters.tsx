@@ -39,6 +39,7 @@ const LOCATION_TYPES: ChargerLocationType[] = [
   'Empresa',
   'Rodovia',
   'Publico',
+  'Particular',
 ];
 
 function Chip({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {

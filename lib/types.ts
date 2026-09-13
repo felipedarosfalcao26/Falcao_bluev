@@ -11,7 +11,8 @@ export type ChargerLocationType =
   | 'Condominio'
   | 'Empresa'
   | 'Rodovia'
-  | 'Publico';
+  | 'Publico'
+  | 'Particular';
 
 export interface Charger {
   id: string;

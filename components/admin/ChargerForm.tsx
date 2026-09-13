@@ -22,6 +22,7 @@ const LOCATION_TYPES: ChargerLocationType[] = [
   'Empresa',
   'Rodovia',
   'Publico',
+  'Particular',
 ];
 
 function toInput(charger?: Charger): ChargerInput {
