@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Charger, ChargerLocationType, ConnectorType } from '@/lib/types';
-import { ChargerInput, createChargerAction, updateChargerAction } from '@/app/admin/(dashboard)/carregadores/actions';
+import { ChargerInput } from '@/services/chargers.service';
+import { createChargerAction, updateChargerAction } from '@/app/admin/(dashboard)/carregadores/actions';
 
 const inputClasses =
   'w-full rounded-xl border border-white/10 bg-ink-950 px-4 py-3 text-white outline-none focus:border-blue-500';
