@@ -78,26 +78,6 @@ export function Hero() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/10 to-ink-950/30" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_45%)]" />
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.6 }}
-              className="absolute left-6 top-6 rounded-xl border border-white/15 bg-black/30 px-4 py-3 backdrop-blur"
-            >
-              <p className="text-xs text-white/60">Recarregando</p>
-              <p className="text-lg font-semibold text-white">82%</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: -16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-              className="absolute bottom-6 right-6 rounded-xl border border-white/15 bg-black/30 px-4 py-3 text-right backdrop-blur"
-            >
-              <p className="text-xs text-white/60">Potência</p>
-              <p className="text-lg font-semibold text-white">150 kW</p>
-            </motion.div>
           </div>
         </motion.div>
       </Container>
