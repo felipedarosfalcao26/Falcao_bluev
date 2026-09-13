@@ -1,0 +1,9 @@
+node_modules
+.next
+.claude/
+out
+build
+.env
+.env.local
+*.log
+.DS_Store
