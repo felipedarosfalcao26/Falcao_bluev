@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BatteryCharging, Gauge, MapPin } from 'lucide-react';
 import { Vehicle } from '@/lib/types';
-import { formatCurrencyBRL, formatKm } from '@/lib/utils';
+import { formatCurrencyBRL, formatKm, isRealImageUrl } from '@/lib/utils';
 import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
 import { Badge } from '@/components/ui/Badge';
 
@@ -21,7 +22,17 @@ export function VehicleCard({ vehicle, index = 0 }: { vehicle: Vehicle; index?: 
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all hover:-translate-y-1 hover:border-blue-500/40 hover:bg-white/[0.05]"
       >
         <div className="relative aspect-[4/3]">
-          <MediaPlaceholder seed={vehicle.id} kind="vehicle" className="h-full w-full" iconClassName="h-16 w-16" />
+          {isRealImageUrl(vehicle.images[0]?.url) ? (
+            <Image
+              src={vehicle.images[0].url}
+              alt={`${vehicle.brand} ${vehicle.model}`}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
+            />
+          ) : (
+            <MediaPlaceholder seed={vehicle.id} kind="vehicle" className="h-full w-full" iconClassName="h-16 w-16" />
+          )}
           {vehicle.featured && (
             <Badge className="absolute left-3 top-3 border-blue-400/40 bg-blue-500/20 text-blue-200">Destaque</Badge>
           )}

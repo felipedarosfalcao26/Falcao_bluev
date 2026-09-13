@@ -28,6 +28,10 @@ export function slugify(text: string) {
     .replace(/(^-|-$)/g, '');
 }
 
+export function isRealImageUrl(url: string | null | undefined): url is string {
+  return !!url && /^https?:\/\//.test(url);
+}
+
 export function haversineDistanceKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
   const R = 6371;
   const dLat = ((b.lat - a.lat) * Math.PI) / 180;

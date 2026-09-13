@@ -7,7 +7,7 @@ import { CookieConsent } from '@/components/layout/CookieConsent';
 import { AnalyticsScripts } from '@/components/layout/AnalyticsScripts';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import './globals.css';
+import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 

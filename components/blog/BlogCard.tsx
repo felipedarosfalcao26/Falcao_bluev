@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/lib/types';
-import { formatDatePtBR } from '@/lib/utils';
+import { formatDatePtBR, isRealImageUrl } from '@/lib/utils';
 import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
 import { Badge } from '@/components/ui/Badge';
 
@@ -20,7 +21,11 @@ export function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all hover:-translate-y-1 hover:border-blue-500/40 hover:bg-white/[0.05]"
       >
         <div className="relative aspect-[16/10]">
-          <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-12 w-12" />
+          {isRealImageUrl(post.image) ? (
+            <Image src={post.image} alt={post.title} fill className="object-cover" />
+          ) : (
+            <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-12 w-12" />
+          )}
           <Badge className="absolute left-3 top-3">{post.category}</Badge>
         </div>
         <div className="flex flex-1 flex-col p-5">

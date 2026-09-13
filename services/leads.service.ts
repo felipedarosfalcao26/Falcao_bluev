@@ -1,10 +1,7 @@
+import { createClient } from '@/lib/supabase/server';
+import { mapLead } from '@/lib/supabase/mappers';
 import { Lead, LeadType } from '@/lib/types';
 
-/**
- * Persists a lead. Today this just logs server-side; wire it to a DB insert
- * and/or forward it to `LEADS_WEBHOOK_URL` (CRM, email, WhatsApp API) once
- * those integrations exist.
- */
 export async function createLead(input: {
   type: LeadType;
   name: string;
@@ -14,11 +11,23 @@ export async function createLead(input: {
   source: string;
   payload: Record<string, unknown>;
 }): Promise<Lead> {
-  const lead: Lead = {
-    id: `lead-${Date.now()}`,
-    createdAt: new Date().toISOString(),
-    ...input,
-  };
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('leads')
+    .insert({
+      type: input.type,
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      message: input.message,
+      source: input.source,
+      payload: input.payload,
+    })
+    .select('*')
+    .single();
+  if (error) throw error;
+
+  const lead = mapLead(data);
 
   const webhook = process.env.LEADS_WEBHOOK_URL;
   if (webhook) {
@@ -28,12 +37,26 @@ export async function createLead(input: {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lead),
       });
-    } catch (error) {
-      console.error('Failed to forward lead to webhook', error);
+    } catch (webhookError) {
+      console.error('Failed to forward lead to webhook', webhookError);
     }
-  } else {
-    console.log('[lead:new]', lead);
   }
 
   return lead;
+}
+
+export async function listLeads(filters: { type?: LeadType } = {}): Promise<Lead[]> {
+  const supabase = createClient();
+  let query = supabase.from('leads').select('*').order('created_at', { ascending: false });
+  if (filters.type) query = query.eq('type', filters.type);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []).map(mapLead);
+}
+
+export async function deleteLead(id: string): Promise<void> {
+  const supabase = createClient();
+  const { error } = await supabase.from('leads').delete().eq('id', id);
+  if (error) throw error;
 }

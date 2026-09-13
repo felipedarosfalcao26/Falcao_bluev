@@ -82,6 +82,8 @@ export type BlogCategory =
   | 'Energia'
   | 'Novidades';
 
+export type BlogPostStatus = 'draft' | 'published' | 'scheduled';
+
 export interface BlogPost {
   id: string;
   slug: string;
@@ -96,6 +98,7 @@ export interface BlogPost {
   seoTitle: string;
   seoDescription: string;
   tags: string[];
+  status?: BlogPostStatus;
 }
 
 export interface CompanyStat {

@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CheckCircle2, Loader2, UploadCloud } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
 import { VehicleListingForm as VehicleListingFormType, vehicleListingSchema } from '@/lib/validations';
 import { Button } from '@/components/ui/Button';
+import { ImageUpload } from '@/components/forms/ImageUpload';
 import { trackEvent } from '@/lib/analytics';
 
 function Field({
@@ -33,6 +34,7 @@ export function VehicleListingForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [images, setImages] = useState<string[]>([]);
 
   const {
     register,
@@ -44,10 +46,10 @@ export function VehicleListingForm() {
     setSubmitting(true);
     setServerError(null);
     try {
-      const res = await fetch('/api/leads', {
+      const res = await fetch('/api/vehicle-listings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'anuncio-veiculo', data }),
+        body: JSON.stringify({ data, images }),
       });
       if (!res.ok) throw new Error('Falha ao enviar');
       trackEvent('vehicle_listing_created', { brand: data.brand, model: data.model });
@@ -134,9 +136,9 @@ export function VehicleListingForm() {
           </Field>
         </div>
 
-        <div className="mt-4 flex items-center gap-3 rounded-xl border border-dashed border-white/15 p-5 text-sm text-white/50">
-          <UploadCloud size={20} />
-          Upload de fotos disponível em breve — por enquanto, envie as fotos pelo WhatsApp após o envio do formulário.
+        <div className="mt-4">
+          <label className="mb-2 block text-sm font-medium text-white/80">Fotos do veículo</label>
+          <ImageUpload folder="vehicles" value={images} onChange={setImages} maxFiles={8} />
         </div>
       </div>
 

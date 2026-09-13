@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Badge } from '@/components/ui/Badge';
 import { MediaPlaceholder } from '@/components/ui/MediaPlaceholder';
 import { BlogCard } from '@/components/blog/BlogCard';
 import { ShareButton } from '@/components/blog/ShareButton';
-import { formatDatePtBR } from '@/lib/utils';
+import { formatDatePtBR, isRealImageUrl } from '@/lib/utils';
 import { SITE_URL } from '@/lib/constants';
 import { getBlogPostBySlug, getRelatedBlogPosts, listBlogPosts } from '@/services/blog.service';
 
@@ -59,8 +60,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           {post.author} · {formatDatePtBR(post.publishedAt)} · {post.readMinutes} min de leitura
         </p>
 
-        <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-white/10">
-          <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-16 w-16" />
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-white/10">
+          {isRealImageUrl(post.image) ? (
+            <Image src={post.image} alt={post.title} fill className="object-cover" priority />
+          ) : (
+            <MediaPlaceholder seed={post.id} kind={post.image} className="h-full w-full" iconClassName="h-16 w-16" />
+          )}
         </div>
 
         <div className="prose prose-invert mt-10 max-w-none space-y-5 text-white/80">
