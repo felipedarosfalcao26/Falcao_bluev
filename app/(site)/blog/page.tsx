@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: 'Notícias, guias e análises sobre carros elétricos, infraestrutura de recarga, baterias e o mercado de eletromobilidade.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPage() {
   const [posts, categories] = await Promise.all([listBlogPosts(), listBlogCategories()]);
 

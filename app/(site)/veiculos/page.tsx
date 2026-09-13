@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Compre e venda carros elétricos e híbridos plug-in com a BlueV: busca por marca, preço, ano, autonomia e muito mais.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function VehiclesPage() {
   const vehicles = await listVehicles();
 

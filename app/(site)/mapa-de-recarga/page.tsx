@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: 'Encontre seu próximo carregador de veículo elétrico: busque por cidade, filtre por potência e conector, e trace a rota.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function ChargersMapPage() {
   const chargers = await listChargers();
 

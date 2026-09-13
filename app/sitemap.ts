@@ -3,6 +3,8 @@ import { SITE_URL } from '@/lib/constants';
 import { listVehicles } from '@/services/vehicles.service';
 import { listBlogPosts } from '@/services/blog.service';
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     '',
