@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Plus } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { DeleteButton } from '@/components/admin/DeleteButton';
@@ -17,22 +17,47 @@ const STATUS_TABS: { label: string; value: VehicleStatus | 'Todos' }[] = [
   { label: 'Vendido', value: 'Vendido' },
 ];
 
-export default async function AdminVehiclesPage({ searchParams }: { searchParams: { status?: string } }) {
+export default async function AdminVehiclesPage({
+  searchParams,
+}: {
+  searchParams: { status?: string; q?: string };
+}) {
   const activeStatus = (searchParams.status as VehicleStatus | undefined) ?? undefined;
-  const vehicles = await listVehicles(activeStatus ? { status: [activeStatus] } : {});
+  const query = searchParams.q?.trim() || undefined;
+  const vehicles = await listVehicles({
+    ...(activeStatus ? { status: [activeStatus] } : {}),
+    ...(query ? { query } : {}),
+  });
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-white">Veículos</h1>
         <Button href="/admin/veiculos/novo" size="md">
           <Plus size={16} /> Novo veículo
         </Button>
       </div>
 
+      <form action="/admin/veiculos" method="get" className="mb-5 max-w-sm">
+        {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
+        <div className="relative">
+          <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <input
+            type="text"
+            name="q"
+            defaultValue={query ?? ''}
+            placeholder="Buscar por código, marca ou modelo"
+            className="w-full rounded-xl border border-white/10 bg-ink-950 py-2.5 pl-9 pr-3 text-sm text-white outline-none focus:border-blue-500"
+          />
+        </div>
+      </form>
+
       <div className="mb-5 flex flex-wrap gap-2">
         {STATUS_TABS.map((tab) => {
-          const href = tab.value === 'Todos' ? '/admin/veiculos' : `/admin/veiculos?status=${tab.value}`;
+          const params = new URLSearchParams();
+          if (tab.value !== 'Todos') params.set('status', tab.value);
+          if (query) params.set('q', query);
+          const href = params.toString() ? `/admin/veiculos?${params.toString()}` : '/admin/veiculos';
           const active = tab.value === 'Todos' ? !activeStatus : activeStatus === tab.value;
           return (
             <Link

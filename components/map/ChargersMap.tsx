@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import Map, { Marker, NavigationControl, GeolocateControl } from 'react-map-gl';
+import { useCallback, useMemo, useRef } from 'react';
+import Map, { Marker, NavigationControl, GeolocateControl, MapRef } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Zap } from 'lucide-react';
 import { Charger } from '@/lib/types';
@@ -17,18 +17,42 @@ interface ChargersMapProps {
   userLocation?: { latitude: number; longitude: number } | null;
 }
 
-function statusColor(status: Charger['status']) {
-  if (status === 'Disponivel') return 'bg-emerald-500';
-  if (status === 'Ocupado') return 'bg-amber-500';
+function markerColor(charger: Charger) {
+  if (charger.locationType === 'Particular') return 'bg-blue-500';
+  if (charger.status === 'Disponivel') return 'bg-emerald-500';
+  if (charger.status === 'Ocupado') return 'bg-amber-500';
   return 'bg-red-500';
 }
 
 export function ChargersMap({ chargers, selectedId, onSelect, userLocation }: ChargersMapProps) {
+  const mapRef = useRef<MapRef>(null);
+
   const center = useMemo(() => {
     if (userLocation) return { latitude: userLocation.latitude, longitude: userLocation.longitude };
     if (chargers.length === 0) return { latitude: -23.5505, longitude: -46.6333 };
     return { latitude: chargers[0].latitude, longitude: chargers[0].longitude };
   }, [chargers, userLocation]);
+
+  const bounds = useMemo<[[number, number], [number, number]] | null>(() => {
+    if (chargers.length === 0) return null;
+    const lats = chargers.map((c) => c.latitude);
+    const lngs = chargers.map((c) => c.longitude);
+    return [
+      [Math.min(...lngs), Math.min(...lats)],
+      [Math.max(...lngs), Math.max(...lats)],
+    ];
+  }, [chargers]);
+
+  const handleLoad = useCallback(() => {
+    const map = mapRef.current?.getMap();
+    if (!map) return;
+
+    if (chargers.length === 1) {
+      map.flyTo({ center: [chargers[0].longitude, chargers[0].latitude], zoom: 13, duration: 0 });
+    } else if (bounds) {
+      map.fitBounds(bounds, { padding: 64, duration: 0, maxZoom: 14 });
+    }
+  }, [bounds, chargers]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -51,10 +75,12 @@ export function ChargersMap({ chargers, selectedId, onSelect, userLocation }: Ch
   return (
     <div className="h-full w-full overflow-hidden rounded-2xl border border-white/10">
       <Map
+        ref={mapRef}
         mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={{ longitude: center.longitude, latitude: center.latitude, zoom: 11 }}
         mapStyle="mapbox://styles/mapbox/dark-v11"
         style={{ width: '100%', height: '100%' }}
+        onLoad={handleLoad}
       >
         <NavigationControl position="top-right" />
         <GeolocateControl position="top-right" />
@@ -72,7 +98,7 @@ export function ChargersMap({ chargers, selectedId, onSelect, userLocation }: Ch
             <button
               className={cn(
                 'flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-white shadow-lg transition-transform hover:scale-110',
-                statusColor(charger.status),
+                markerColor(charger),
                 selectedId === charger.id && 'scale-125 ring-4 ring-blue-400/50'
               )}
               aria-label={charger.name}

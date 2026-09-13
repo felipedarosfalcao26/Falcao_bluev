@@ -46,7 +46,7 @@ export async function listVehicles(filters: VehicleFilters = {}): Promise<Vehicl
   const supabase = createClient();
   let query = supabase.from('vehicles').select(VEHICLE_SELECT);
 
-  if (filters.query) query = query.or(`brand.ilike.%${filters.query}%,model.ilike.%${filters.query}%`);
+  if (filters.query) query = query.or(`brand.ilike.%${filters.query}%,model.ilike.%${filters.query}%,code.ilike.%${filters.query}%`);
   if (filters.brands?.length) query = query.in('brand', filters.brands);
   if (filters.minPrice) query = query.gte('price', filters.minPrice);
   if (filters.maxPrice) query = query.lte('price', filters.maxPrice);

@@ -50,14 +50,18 @@ export function VehicleActions({ vehicle }: { vehicle: Vehicle }) {
   return (
     <div className="flex flex-col gap-3">
       <Button
-        href={whatsappLink(`Olá! Tenho interesse no ${vehicle.brand} ${vehicle.model} ${vehicle.year} anunciado na BlueV.`)}
+        href={whatsappLink(
+          `Olá! Tenho interesse no ${vehicle.brand} ${vehicle.model} ${vehicle.year} (código ${vehicle.code}) anunciado na BlueV.`
+        )}
         size="lg"
         onClick={handleInterest}
       >
         <MessageCircle size={18} /> Tenho interesse
       </Button>
       <Button
-        href={whatsappLink(`Olá! Gostaria de falar com o vendedor do ${vehicle.brand} ${vehicle.model} anunciado na BlueV.`)}
+        href={whatsappLink(
+          `Olá! Gostaria de falar com o vendedor do ${vehicle.brand} ${vehicle.model} (código ${vehicle.code}) anunciado na BlueV.`
+        )}
         variant="secondary"
         size="lg"
       >
