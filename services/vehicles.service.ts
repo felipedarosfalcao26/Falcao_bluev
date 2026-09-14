@@ -18,6 +18,7 @@ export interface VehicleFilters {
   state?: string;
   status?: VehicleStatus[];
   sort?: 'recent' | 'price-asc' | 'price-desc' | 'mileage-asc';
+  includeHidden?: boolean;
 }
 
 export interface VehicleInput {
@@ -47,6 +48,7 @@ export async function listVehicles(filters: VehicleFilters = {}): Promise<Vehicl
   const supabase = createClient();
   let query = supabase.from('vehicles').select(VEHICLE_SELECT);
 
+  if (!filters.includeHidden) query = query.eq('hidden', false);
   if (filters.query) query = query.or(`brand.ilike.%${filters.query}%,model.ilike.%${filters.query}%,code.ilike.%${filters.query}%`);
   if (filters.brands?.length) query = query.in('brand', filters.brands);
   if (filters.minPrice) query = query.gte('price', filters.minPrice);
@@ -81,7 +83,12 @@ export async function listVehicles(filters: VehicleFilters = {}): Promise<Vehicl
 
 export async function getVehicleBySlug(slug: string): Promise<Vehicle | undefined> {
   const supabase = createClient();
-  const { data, error } = await supabase.from('vehicles').select(VEHICLE_SELECT).eq('slug', slug).maybeSingle();
+  const { data, error } = await supabase
+    .from('vehicles')
+    .select(VEHICLE_SELECT)
+    .eq('slug', slug)
+    .eq('hidden', false)
+    .maybeSingle();
   if (error) throw error;
   return data ? mapVehicle(data) : undefined;
 }
@@ -99,6 +106,7 @@ export async function getFeaturedVehicles(limit = 6): Promise<Vehicle[]> {
     .from('vehicles')
     .select(VEHICLE_SELECT)
     .eq('featured', true)
+    .eq('hidden', false)
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
@@ -110,6 +118,7 @@ export async function getRecentVehicles(limit = 6): Promise<Vehicle[]> {
   const { data, error } = await supabase
     .from('vehicles')
     .select(VEHICLE_SELECT)
+    .eq('hidden', false)
     .order('created_at', { ascending: false })
     .limit(limit);
   if (error) throw error;
@@ -122,6 +131,7 @@ export async function getRelatedVehicles(vehicle: Vehicle, limit = 4): Promise<V
     .from('vehicles')
     .select(VEHICLE_SELECT)
     .neq('id', vehicle.id)
+    .eq('hidden', false)
     .or(`brand.eq.${vehicle.brand},type.eq.${vehicle.type}`)
     .limit(limit);
   if (error) throw error;

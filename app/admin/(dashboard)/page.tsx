@@ -8,7 +8,7 @@ import { listLeads } from '@/services/leads.service';
 export default async function AdminDashboardPage() {
   const [chargers, vehicles, posts, leads] = await Promise.all([
     listChargers(),
-    listVehicles(),
+    listVehicles({ includeHidden: true }),
     listBlogPosts(),
     listLeads(),
   ]);

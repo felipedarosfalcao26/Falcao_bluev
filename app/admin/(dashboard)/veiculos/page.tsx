@@ -25,6 +25,7 @@ export default async function AdminVehiclesPage({
   const activeStatus = (searchParams.status as VehicleStatus | undefined) ?? undefined;
   const query = searchParams.q?.trim() || undefined;
   const vehicles = await listVehicles({
+    includeHidden: true,
     ...(activeStatus ? { status: [activeStatus] } : {}),
     ...(query ? { query } : {}),
   });
