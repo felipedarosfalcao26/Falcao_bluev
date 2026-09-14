@@ -54,6 +54,7 @@ export function mapVehicle(row: any): Vehicle {
     sellerName: row.seller_name,
     sellerType: row.seller_type,
     featured: row.featured,
+    hidden: row.hidden,
     createdAt: row.created_at,
     status: row.status,
   };

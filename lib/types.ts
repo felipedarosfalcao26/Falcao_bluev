@@ -68,6 +68,7 @@ export interface Vehicle {
   sellerName: string;
   sellerType: 'Particular' | 'Concessionaria' | 'BlueV Certificado';
   featured: boolean;
+  hidden: boolean;
   createdAt: string;
   status: VehicleStatus;
 }

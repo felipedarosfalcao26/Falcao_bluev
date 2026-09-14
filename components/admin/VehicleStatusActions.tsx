@@ -2,10 +2,10 @@
 
 import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { EyeOff, Eye, Loader2 } from 'lucide-react';
 import { Vehicle, VehicleStatus } from '@/lib/types';
 import { VehicleInput } from '@/services/vehicles.service';
-import { setVehicleStatusAction } from '@/app/admin/(dashboard)/veiculos/actions';
+import { setVehicleStatusAction, setVehicleHiddenAction } from '@/app/admin/(dashboard)/veiculos/actions';
 
 function toInput(vehicle: Vehicle): VehicleInput {
   return {
@@ -27,6 +27,7 @@ function toInput(vehicle: Vehicle): VehicleInput {
     sellerName: vehicle.sellerName,
     sellerType: vehicle.sellerType,
     featured: vehicle.featured,
+    hidden: vehicle.hidden,
     status: vehicle.status,
   };
 }
@@ -42,31 +43,45 @@ export function VehicleStatusActions({ vehicle }: { vehicle: Vehicle }) {
     });
   }
 
+  function toggleHidden() {
+    startTransition(async () => {
+      await setVehicleHiddenAction(vehicle.id, !vehicle.hidden, toInput(vehicle));
+      router.refresh();
+    });
+  }
+
   if (pending) return <Loader2 size={14} className="animate-spin text-white/50" />;
 
-  if (vehicle.status === 'Pendente moderacao') {
-    return (
-      <button onClick={() => setStatus('Disponivel')} className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
-        Aprovar
-      </button>
-    );
-  }
+  return (
+    <div className="flex items-center gap-3">
+      {vehicle.status === 'Pendente moderacao' && (
+        <button onClick={() => setStatus('Disponivel')} className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
+          Aprovar
+        </button>
+      )}
 
-  if (vehicle.status === 'Disponivel') {
-    return (
-      <button onClick={() => setStatus('Reservado')} className="text-xs font-medium text-amber-400 hover:text-amber-300">
-        Pausar
-      </button>
-    );
-  }
+      {vehicle.status === 'Disponivel' && (
+        <button onClick={() => setStatus('Reservado')} className="text-xs font-medium text-amber-400 hover:text-amber-300">
+          Pausar
+        </button>
+      )}
 
-  if (vehicle.status === 'Reservado') {
-    return (
-      <button onClick={() => setStatus('Disponivel')} className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
-        Republicar
-      </button>
-    );
-  }
+      {vehicle.status === 'Reservado' && (
+        <button onClick={() => setStatus('Disponivel')} className="text-xs font-medium text-emerald-400 hover:text-emerald-300">
+          Republicar
+        </button>
+      )}
 
-  return null;
+      <button
+        onClick={toggleHidden}
+        title={vehicle.hidden ? 'Reexibir anúncio' : 'Ocultar anúncio'}
+        className={`flex items-center gap-1 text-xs font-medium ${
+          vehicle.hidden ? 'text-blue-400 hover:text-blue-300' : 'text-white/50 hover:text-white'
+        }`}
+      >
+        {vehicle.hidden ? <Eye size={13} /> : <EyeOff size={13} />}
+        {vehicle.hidden ? 'Reexibir' : 'Ocultar'}
+      </button>
+    </div>
+  );
 }

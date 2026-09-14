@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
       sellerName: data.name,
       sellerType: 'Particular',
       featured: false,
+      hidden: false,
       status: 'Pendente moderacao',
     },
     images

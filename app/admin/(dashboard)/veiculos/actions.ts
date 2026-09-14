@@ -40,6 +40,11 @@ export async function setVehicleStatusAction(id: string, status: VehicleStatus, 
   revalidateVehiclePaths();
 }
 
+export async function setVehicleHiddenAction(id: string, hidden: boolean, current: VehicleInput) {
+  await updateVehicle(id, { ...current, hidden });
+  revalidateVehiclePaths();
+}
+
 export async function deleteVehicleImageAction(imageId: string) {
   await deleteVehicleImage(imageId);
   revalidateVehiclePaths();

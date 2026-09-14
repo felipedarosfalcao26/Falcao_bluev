@@ -33,6 +33,7 @@ function toInput(vehicle?: Vehicle): VehicleInput {
     sellerName: vehicle?.sellerName ?? 'BlueV Seminovos',
     sellerType: vehicle?.sellerType ?? 'BlueV Certificado',
     featured: vehicle?.featured ?? false,
+    hidden: vehicle?.hidden ?? false,
     status: vehicle?.status ?? 'Disponivel',
   };
 }
@@ -238,6 +239,11 @@ export function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
       <label className="flex items-center gap-2 text-sm text-white/70">
         <input type="checkbox" checked={form.featured} onChange={(e) => update('featured', e.target.checked)} />
         Destacar este veículo (aparece na Home e no topo do marketplace)
+      </label>
+
+      <label className="flex items-center gap-2 text-sm text-white/70">
+        <input type="checkbox" checked={form.hidden} onChange={(e) => update('hidden', e.target.checked)} />
+        Ocultar este veículo (não aparece mais à venda no site, mesmo com status Disponível)
       </label>
 
       <div>

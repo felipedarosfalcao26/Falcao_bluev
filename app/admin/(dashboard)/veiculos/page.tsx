@@ -92,6 +92,7 @@ export default async function AdminVehiclesPage({
                 <td className="px-4 py-3 text-white">
                   {vehicle.brand} {vehicle.model} {vehicle.year}
                   {vehicle.featured && <Badge className="ml-2">Destaque</Badge>}
+                  {vehicle.hidden && <Badge className="ml-2 bg-blue-500/15 text-blue-400">Oculto</Badge>}
                 </td>
                 <td className="px-4 py-3 text-white/60">{formatCurrencyBRL(vehicle.price)}</td>
                 <td className="px-4 py-3 text-white/60">{vehicle.sellerName}</td>

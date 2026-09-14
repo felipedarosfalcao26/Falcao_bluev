@@ -39,6 +39,7 @@ export interface VehicleInput {
   sellerName: string;
   sellerType: Vehicle['sellerType'];
   featured: boolean;
+  hidden: boolean;
   status: VehicleStatus;
 }
 
@@ -155,6 +156,7 @@ export async function createVehicle(input: VehicleInput, imageUrls: string[] = [
       seller_name: input.sellerName,
       seller_type: input.sellerType,
       featured: input.featured,
+      hidden: input.hidden,
       status: input.status,
     })
     .select(VEHICLE_SELECT)
@@ -193,6 +195,7 @@ export async function updateVehicle(id: string, input: VehicleInput): Promise<Ve
       seller_name: input.sellerName,
       seller_type: input.sellerType,
       featured: input.featured,
+      hidden: input.hidden,
       status: input.status,
     })
     .eq('id', id)
