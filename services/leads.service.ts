@@ -1,6 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { mapLead } from '@/lib/supabase/mappers';
 import { Lead, LeadType } from '@/lib/types';
+import { sendLeadNotificationEmail } from '@/lib/email';
+
+const EMAIL_NOTIFIED_TYPES: LeadType[] = ['instalacao', 'contato'];
 
 export async function createLead(input: {
   type: LeadType;
@@ -40,6 +43,10 @@ export async function createLead(input: {
     } catch (webhookError) {
       console.error('Failed to forward lead to webhook', webhookError);
     }
+  }
+
+  if (EMAIL_NOTIFIED_TYPES.includes(lead.type)) {
+    await sendLeadNotificationEmail(lead);
   }
 
   return lead;
