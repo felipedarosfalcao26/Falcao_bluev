@@ -15,22 +15,36 @@ export async function createLead(input: {
   payload: Record<string, unknown>;
 }): Promise<Lead> {
   const supabase = createClient();
-  const { data, error } = await supabase
-    .from('leads')
-    .insert({
-      type: input.type,
-      name: input.name,
-      email: input.email,
-      phone: input.phone,
-      message: input.message,
-      source: input.source,
-      payload: input.payload,
-    })
-    .select('*')
-    .single();
+  const id = crypto.randomUUID();
+  const createdAt = new Date().toISOString();
+
+  // Insert without .select(): the public "criar lead" policy only grants INSERT, not SELECT,
+  // so asking Postgres to return the row (RETURNING) fails RLS even though the insert itself
+  // is allowed — Postgres checks the SELECT policies against the returned row too.
+  const { error } = await supabase.from('leads').insert({
+    id,
+    type: input.type,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    message: input.message,
+    source: input.source,
+    payload: input.payload,
+    created_at: createdAt,
+  });
   if (error) throw error;
 
-  const lead = mapLead(data);
+  const lead: Lead = {
+    id,
+    type: input.type,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    message: input.message,
+    source: input.source,
+    payload: input.payload,
+    createdAt,
+  };
 
   const webhook = process.env.LEADS_WEBHOOK_URL;
   if (webhook) {
